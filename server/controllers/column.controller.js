@@ -20,11 +20,11 @@ module.exports = {
     deleteColumn : async (req,resp) => {
         await Column.findOneAndDelete({_id:req.params.id}, (err,result) => handleResponse(err,result,resp));
     },
-    addTaskToColumn : async (req,resp) => {
+    addTask : async (req,resp) => {
         const newTask = await Task.create(req.body);
         await Column.findOneAndUpdate({_id:req.params.id}, {$push:{tasks:newTask}}, {new:true}).exec((err,result) => handleResponse(err,result,resp));
     },
-    removeTaskFromColumn : async (req,resp) => {
+    removeTask : async (req,resp) => {
         await Column.findOneAndUpdate({_id:req.params.id}, {$pull:{tasks:req.body}}).exec((err,result) => handleResponse(err,result,resp));
     },
     moveTask : async (req,resp) => {
