@@ -19,16 +19,19 @@ module.exports = {
     },
     deleteColumn : async (req,resp) => {
         await Column.findOneAndDelete({_id:req.params.id}, (err,result) => handleResponse(err,result,resp));
+        const io = req.app.get('io');
+        io.emit('delColumn');
     },
     addTask : async (req,resp) => {
         const newTask = await Task.create(req.body);
         await Column.findOneAndUpdate({_id:req.params.id}, {$push:{tasks:newTask}}, {new:true}).exec((err,result) => handleResponse(err,result,resp));
-    },
-    removeTask : async (req,resp) => {
-        await Column.findOneAndUpdate({_id:req.params.id}, {$pull:{tasks:req.body}}).exec((err,result) => handleResponse(err,result,resp));
+        const io = req.app.get('io');
+        io.emit('addTask');
     },
     moveTask : async (req,resp) => {
-        await Column.findOneAndUpdate({_id:req.body.fromcolumnid}, {$pull:{tasks:req.body.taskid}});
-        await Column.findOneAndUpdate({_id:req.body.tocolumnid}, {$push:{tasks:req.body.taskid}}, {new:true}).exec((err,result) => handleResponse(err,result,resp));
+        const oldCol = await Column.findOneAndUpdate({_id:req.body.fromcolumnid}, {$pull:{tasks:req.body.taskid}});
+        const newCol = await Column.findOneAndUpdate({_id:req.body.tocolumnid}, {$push:{tasks:req.body.taskid}}, {new:true}).exec((err,result) => handleResponse(err,result,resp));
+        const io = req.app.get('io');
+        io.emit('moveTask');
     }
 }
