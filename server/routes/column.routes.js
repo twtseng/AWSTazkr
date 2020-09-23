@@ -1,4 +1,4 @@
-const {getAllColumns,getSingleColumn,createColumn,updateColumn,deleteColumn,addTaskToColumn,removeTaskFromColumn,moveTask} = require('../controllers/column.controller');
+const {getAllColumns,getSingleColumn,createColumn,updateColumn,deleteColumn,addTask,removeTask,moveTask} = require('../controllers/column.controller');
 
 module.exports = app => {
     app.get('/api/columns', getAllColumns);
