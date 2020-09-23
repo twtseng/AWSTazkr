@@ -3,6 +3,8 @@ import Column from '../components/Column';
 import axios from 'axios';
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
+import io from 'socket.io-client'
+const socket = io("http://localhost:8000");
 
 export default ({id}) => {
     const [board,setBoard] = useState({});
@@ -23,21 +25,28 @@ export default ({id}) => {
             tasks:[],
             board: id
         })
-        .then(resp => refreshBoard())
         .catch(err => console.log(err));
     }
 
-    const deleteColumn = columnId => {
-        board.columns = board.columns.filter(col => col._id !== columnId);
-        console.log(`deleteColumn columnId:${columnId}`);
-        console.log(`deleteColumn updatedObject:${board}`);
-        axios.put(`http://localhost:8000/api/boards/${id}/update`,board)
-        .then(resp => refreshBoard())
+    const deleteColumn = column => {
+        axios.delete(`http://localhost:8000/api/columns/${column._id}/delete`,column)
         .catch(err => console.log(err));
     }
 
     useEffect(() => {
         refreshBoard();
+        socket.on('addColumn', resp => {
+            refreshBoard();
+        })
+        socket.on('delColumn', resp => {
+            refreshBoard();
+        })
+        socket.on('moveTask',resp => {
+            refreshBoard();
+        });
+        socket.on('addTask', resp => {
+            refreshBoard();
+        })
     },[]);
 
     return (
@@ -45,7 +54,7 @@ export default ({id}) => {
             <h1>Board</h1>
             <button onClick={addColumn}>Add Column</button>
             <div style={{display:"flex",padding:20}}>
-                {board.columns && board.columns.map((column) => <Column key={column._id} column={column} refreshBoard={refreshBoard} deleteColumn={() => deleteColumn(column._id)}/>)}
+                {board.columns && board.columns.map((column) => <Column key={column._id} column={column} refreshBoard={refreshBoard} deleteColumn={() => deleteColumn(column)}/>)}
             </div>
         </DndProvider>
     )
