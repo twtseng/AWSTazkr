@@ -6,7 +6,7 @@ module.exports = app => {
     app.post('/api/columns/create', createColumn);
     app.put('/api/columns/:id/update', updateColumn);
     app.delete('/api/columns/:id/delete', deleteColumn);
-    app.patch('/api/columns/:id/addTaskToColumn', addTaskToColumn);
-    app.patch('/api/columns/:id/removeTaskFromColumn/:taskid', removeTaskFromColumn);
-    app.patch('/api/columns/moveTask/:taskid/:fromcolumnid/:tocolumnid', moveTask);
+    app.patch('/api/columns/:id/addTask', addTask);
+    app.patch('/api/columns/:id/removeTask', removeTask);
+    app.patch('/api/columns/moveTask/', moveTask);
 }

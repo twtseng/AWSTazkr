@@ -25,10 +25,10 @@ module.exports = {
         await Column.findOneAndUpdate({_id:req.params.id}, {$push:{tasks:newTask}}, {new:true}).exec((err,result) => handleResponse(err,result,resp));
     },
     removeTaskFromColumn : async (req,resp) => {
-        await Column.findOneAndUpdate({_id:req.params.id}, {$pull:{tasks:req.params.taskid}}, (err,result) => handleResponse(err,result,resp));
+        await Column.findOneAndUpdate({_id:req.params.id}, {$pull:{tasks:req.body}}).exec((err,result) => handleResponse(err,result,resp));
     },
     moveTask : async (req,resp) => {
-        await Column.findOneAndUpdate({_id:req.params.fromcolumnid}, {$pull:{tasks:req.params.taskid}});
-        await Column.findOneAndUpdate({_id:req.params.tocolumnid}, {$push:{tasks:req.params.taskid}}, {new:true}).exec((err,result) => handleResponse(err,result,resp));
+        await Column.findOneAndUpdate({_id:req.body.fromcolumnid}, {$pull:{tasks:req.body.taskid}});
+        await Column.findOneAndUpdate({_id:req.body.tocolumnid}, {$push:{tasks:req.body.taskid}}, {new:true}).exec((err,result) => handleResponse(err,result,resp));
     }
 }
