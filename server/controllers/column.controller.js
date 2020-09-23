@@ -21,36 +21,14 @@ module.exports = {
         await Column.findOneAndDelete({_id:req.params.id}, (err,result) => handleResponse(err,result,resp));
     },
     addTaskToColumn : async (req,resp) => {
-        try {
-            console.log(`addTaskToColumn id:[${req.params.id}]`);
-            const newTask = await Task.create(req.body);
-            console.log(`addTaskToColumn new task:[${newTask}]`)
-            const updatedColumn = await Column.findOneAndUpdate({_id:req.params.id}, {$push: { tasks: newTask }}, {new:true});
-            console.log(`addTaskToColumn updatedColumn:[${updatedColumn}]`)
-            resp.json(updatedColumn);
-        } catch (err) {
-            resp.status(400).json(err);
-        }
+        const newTask = await Task.create(req.body);
+        await Column.findOneAndUpdate({_id:req.params.id}, {$push:{tasks:newTask}}, {new:true}).exec((err,result) => handleResponse(err,result,resp));
     },
     removeTaskFromColumn : async (req,resp) => {
-        try {
-            let originalColumn = await Column.findOne({_id:req.params.id});
-            originalColumn.tasks = originalColumn.tasks.filter(taskid => taskid != req.params.taskid);
-            const updatedColumn = await Column.findOneAndUpdate({_id:req.params.id}, originalColumn, {new:true});
-            resp.json(updatedColumn);
-        } catch (err) {
-            resp.status(400).json(err);
-        }
+        await Column.findOneAndUpdate({_id:req.params.id}, {$pull:{tasks:req.body}}).exec((err,result) => handleResponse(err,result,resp));
     },
     moveTask : async (req,resp) => {
-        try {
-            let originalColumn = await Column.findOne({_id:req.params.fromcolumnid});
-            originalColumn.tasks = originalColumn.tasks.filter(taskid => taskid != req.params.taskid);
-            await Column.findOneAndUpdate({_id:req.params.fromcolumnid}, originalColumn, {new:true});
-            const newColumn = await Column.findOneAndUpdate({_id:req.params.tocolumnid}, {$push: { tasks: req.params.taskid }}, {new:true});
-            resp.json(newColumn);
-        } catch (err) {
-            resp.status(400).json(err);
-        }
+        await Column.findOneAndUpdate({_id:req.body.fromcolumnid}, {$pull:{tasks:req.body.taskid}});
+        await Column.findOneAndUpdate({_id:req.body.tocolumnid}, {$push:{tasks:req.body.taskid}}, {new:true}).exec((err,result) => handleResponse(err,result,resp));
     }
 }

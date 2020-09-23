@@ -5,15 +5,13 @@ import axios from 'axios';
 import { useDrop } from 'react-dnd';
 
 export default ({column, deleteColumn, refreshBoard}) => {
-
-
     const moveTask = (taskToMove, fromColumn) => {
-        axios.patch(`http://localhost:8000/api/columns/moveTask/${taskToMove._id}/${fromColumn._id}/${column._id}`,{})
+        axios.patch(`http://localhost:8000/api/columns/moveTask/`,{taskid:taskToMove._id,fromcolumnid:fromColumn._id,tocolumnid:column._id})
         .then(resp => refreshBoard())
         .catch(err => console.log(err));
     }
     const addNewTask = () => {
-        axios.patch(`http://localhost:8000/api/columns/${column._id}/addTaskToColumn`,{ Name: "New Task", description: "New task description"})
+        axios.patch(`http://localhost:8000/api/columns/${column._id}/addTask`,{ Name: "New Task", description: "New task description"})
         .then(resp => refreshBoard())
         .catch(err => console.log(err));
     }
