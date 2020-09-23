@@ -34,7 +34,7 @@ export default ({socket,provider}) => {
 
     return (
         <div>
-            {!user ? <button onClick={e => startAuth(e)}>{provider}</button> : <p>{user.name}</p>}
+            {!user ? <button onClick={e => startAuth(e)}>{provider}</button> : <p>{user.username}</p>}
         </div>
     );
 }

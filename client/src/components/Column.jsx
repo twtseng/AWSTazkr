@@ -5,8 +5,6 @@ import axios from 'axios';
 import { useDrop } from 'react-dnd';
 
 export default ({column, deleteColumn, refreshBoard}) => {
-
-
     const moveTask = (taskToMove, fromColumn) => {
         axios.patch(`http://localhost:8000/api/columns/moveTask/${taskToMove._id}/${fromColumn._id}/${column._id}`,{})
         .then(resp => refreshBoard())
