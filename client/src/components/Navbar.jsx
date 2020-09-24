@@ -1,9 +1,11 @@
-import React,{useState} from 'react';
+import React from 'react';
 import {AppBar,Toolbar,Typography} from '@material-ui/core';
 import {Link} from '@reach/router';
+import {useAppContext} from '../libs/contextLib';
 
 export default props => {
-    const [auth,setAuth] = useState(false);
+    const {auth} = useAppContext();
+
     return (
         <AppBar position="static">
             <Toolbar>
@@ -14,9 +16,12 @@ export default props => {
                   <Link style={{color:"white"}} to="/board">Board</Link>
                 </Typography>
                 <Typography variant="h4">
+                  <Link style={{color:"white"}} to="/profile">Profile</Link>
                   {auth ? 
-                  <Link style={{color:"white"}} to="/profile">Profile</Link> : 
-                  <Link style={{color:"white"}} to="/login">Login</Link>}
+                  <Link style={{color:"white"}} to="/login">Logout</Link>//TODO create logout function
+                  :
+                  <Link style={{color:"white"}} to="/login">Login</Link>
+                  }
                 </Typography>
             </Toolbar>
         </AppBar>

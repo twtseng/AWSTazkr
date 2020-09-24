@@ -1,18 +1,20 @@
 import React,{useState,useEffect} from 'react'
-export default ({socket,provider}) => {
-    const [user,setUser] = useState();
-    const [popup,setPopup] = useState();
+import {useAppContext} from '../libs/contextLib';
 
+export default ({socket,provider}) => {
+    const [popup,setPopup] = useState();
+    const {auth,setAuth,user,setUser} = useAppContext();
     useEffect(() => {
         socket.on(provider,resp => {
             setUser(resp);
+            setAuth(true);
             console.log(resp);
         });
-    },[]);
+    },[provider,setAuth,setUser,socket]);
 
     useEffect(() => {
-        user && popup.close();
-    },[user]);
+        user && popup && popup.close();
+    },[user,popup]);
 
     const openPopup = () => {
         const width=600,height=600;
@@ -34,7 +36,7 @@ export default ({socket,provider}) => {
 
     return (
         <div>
-            {!user ? <button onClick={e => startAuth(e)}>{provider}</button> : <p>{user.username}</p>}
+            {!auth ? <button onClick={e => startAuth(e)}>{provider}</button> : <p>{user.username}</p>}
         </div>
     );
 }
