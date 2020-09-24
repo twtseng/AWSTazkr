@@ -3,7 +3,6 @@ const cors = require('cors');
 const app = express();
 const passport = require('passport');
 const session = require('express-session');
-const MongoDBStore = require('connect-mongodb-session')(session);
 const port = 8000;
 const { Board } = require('./models/board.model');
 const { Column } = require('./models/column.model');
@@ -11,10 +10,7 @@ const { Task } = require('./models/task.model');
 
 require('./config/mongoose.config');
 
-const mongoDBStore = new MongoDBStore({
-    uri: 'mongodb://localhost/tazkr',
-    collection: "sessions"
-});
+const {mongoDBStore} = require('./config/production.config');
 
 app.use(cors(),express.urlencoded({extended:true}),express.json(),passport.initialize(),passport.session());
 app.use(session({
