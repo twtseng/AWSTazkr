@@ -6,5 +6,5 @@ module.exports = app => {
     app.post('/api/boards/create', createBoard);
     app.put('/api/boards/:id/update', updateBoard);
     app.delete('/api/boards/:id/delete', deleteBoard);
-    app.patch('/api/boards/:id/addColumnToBoard', addColumnToBoard);
+    //app.patch('/api/boards/:id/addColumnToBoard', addColumnToBoard);
 }

@@ -23,5 +23,11 @@ module.exports = app => {
     app.get('/auth/facebook/callback', facebookAuth, facebook);
     app.get('/auth/github/callback', githubAuth, github);
 
-    app.get('/auth/logout', (req,res) => req.session.destroy());
+    app.get('/auth/logout', (req,res) => {
+        req.session.destroy(err => {
+            console.log(err); 
+        })
+        const io = req.app.get('io');
+        io.emit('logout',"hello world");
+    });
 }

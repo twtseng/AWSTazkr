@@ -6,5 +6,5 @@ module.exports = app => {
     app.post('/api/tasks/create', createTask);
     app.put('/api/tasks/:id/update', updateTask);
     app.delete('/api/tasks/:id/delete', deleteTask);
-    app.patch('/api/tasks/:id/add', addToTask);
+    //app.patch('/api/tasks/:id/add', addToTask);
 }

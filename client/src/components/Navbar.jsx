@@ -1,10 +1,23 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import {AppBar,Toolbar,Typography} from '@material-ui/core';
 import {Link} from '@reach/router';
 import {useAppContext} from '../libs/contextLib';
 
-export default props => {
-    const {auth} = useAppContext();
+export default () => {
+    const {auth,setAuth,user,setUser,socket} = useAppContext();
+
+    const logout = e => {
+      e.preventDefault();
+      socket.emit('logout',user);
+    }
+
+    useEffect(() => {
+      socket.on("logout", resp => {
+        console.log(`logged out ${resp}`)
+        setAuth(false);
+        setUser(null);
+      })
+    },[setAuth,setUser,socket]);
 
     return (
         <AppBar position="static">
@@ -18,8 +31,7 @@ export default props => {
                 <Typography variant="h4">
                   <Link style={{color:"white"}} to="/profile">Profile</Link>
                   {auth ? 
-                  <Link style={{color:"white"}} to="/login">Logout</Link>//TODO create logout function
-                  :
+                  <button onClick={logout}>Logout</button>:
                   <Link style={{color:"white"}} to="/login">Login</Link>
                   }
                 </Typography>
