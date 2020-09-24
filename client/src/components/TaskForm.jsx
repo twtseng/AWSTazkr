@@ -1,9 +1,7 @@
 import React,{useState} from 'react';
 import { Card, CardContent, Typography, FormControl, InputLabel, Input, TextField, Select, MenuItem, CardHeader, Button} from '@material-ui/core';
-import {useAppContext} from '../libs/contextLib';
 
-export default ({taskProp,close}) => {
-    const {socket} = useAppContext();
+export default ({type,taskProp,handleSubmit}) => {
     const [task,setTask] = useState(taskProp);
 
     const modalStyle = {
@@ -17,14 +15,9 @@ export default ({taskProp,close}) => {
         textAlign:"center"
     }
 
-    const handleSubmit = e => {
-        e.preventDefault();
-        socket.emit('updateTask',task)
-        close();
-    }
     return (
         <Card style={modalStyle}>
-            <CardHeader title={"Update Task"}/>
+            <CardHeader title={`${type} task`}/>
             <CardContent>
                     <FormControl style={{display:"block",margin:20,textAlign:"left"}}>
                         <InputLabel htmlFor="taskName">Task name</InputLabel>
@@ -42,7 +35,7 @@ export default ({taskProp,close}) => {
                     </Select>
                 </FormControl> */}
             </CardContent>
-            <Button onClick={handleSubmit}>Update</Button>
+            <Button onClick={e => handleSubmit(task)}>{type}</Button>
         </Card>
     )
 }

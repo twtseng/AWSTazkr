@@ -2,8 +2,10 @@ import { Card, CardContent, Typography, Modal} from '@material-ui/core';
 import React,{useState} from 'react';
 import { useDrag } from 'react-dnd';
 import TaskForm from './TaskForm';
+import {useAppContext} from '../libs/contextLib';
 
 export default ({task, column}) => {
+    const {socket} = useAppContext();
     const [open,setOpen] = useState(false);
     const [, drag] = useDrag({
         item: { 
@@ -13,17 +15,14 @@ export default ({task, column}) => {
         }
     });
 
-    const handleOpen = () => {
-        setOpen(true);
-    }
-
-    const handleClose = () => {
+    const handleClose = task => {
         setOpen(false);
+        socket.emit('updateTask',task);
     }
 
     return (
         <div>
-            <Card onClick={handleOpen} style={{margin:"1rem",minWidth:200}} ref={drag}>
+            <Card onClick={() => setOpen(true)} style={{margin:"1rem",minWidth:200}} ref={drag}>
                 <CardContent>
                     <Typography variant="h5" component="p">
                         {task.Name}
@@ -31,7 +30,7 @@ export default ({task, column}) => {
                 </CardContent>
             </Card>
             <Modal open={open} onClose={handleClose}>
-                <TaskForm taskProp={task} close={handleClose}/>
+                <TaskForm type="Update" taskProp={task} handleSubmit={handleClose}/>
             </Modal>
         </div>
         
