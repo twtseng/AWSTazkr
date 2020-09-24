@@ -26,15 +26,14 @@ export default ({taskProp,close}) => {
         <Card style={modalStyle}>
             <CardHeader title={"Update Task"}/>
             <CardContent>
-                <form onSubmit={handleSubmit}>
-                <FormControl style={{display:"block",margin:20,textAlign:"left"}}>
-                    <InputLabel htmlFor="taskName">Task name</InputLabel>
-                    <Input value={task.Name} id="taskName" onChange={e => setTask({...task,['Name']:e.target.value})}/>
-                </FormControl>
-                <FormControl style={{display:"block",margin:20,textAlign:"left"}}>
-                    <InputLabel htmlFor="taskDesc">Task description</InputLabel>
-                    <Input value={task.description} id="taskDesc" onChange={e => setTask({...task,['description']:e.target.value})}/>
-                </FormControl>
+                    <FormControl style={{display:"block",margin:20,textAlign:"left"}}>
+                        <InputLabel htmlFor="taskName">Task name</InputLabel>
+                        <Input value={task.Name} id="taskName" onChange={e => setTask({...task,['Name']:e.target.value})}/>
+                    </FormControl>
+                    <FormControl style={{display:"block",margin:20,textAlign:"left"}}>
+                        <InputLabel htmlFor="taskDesc">Task description</InputLabel>
+                        <Input value={task.description} id="taskDesc" onChange={e => setTask({...task,['description']:e.target.value})}/>
+                    </FormControl>
                 {/* <FormControl style={{display:"block",margin:20,textAlign:"left"}}>
                     <InputLabel id="taskPriority">Task priority</InputLabel>
                     <Select select label="taskPriority" value={task.}>
@@ -42,9 +41,8 @@ export default ({taskProp,close}) => {
                         <MenuItem value={2}>{2}</MenuItem>
                     </Select>
                 </FormControl> */}
-                </form>
             </CardContent>
-            <Button>Update</Button>
+            <Button onClick={handleSubmit}>Update</Button>
         </Card>
     )
 }
