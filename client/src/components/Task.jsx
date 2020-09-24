@@ -9,10 +9,7 @@ export default ({task, column, refreshColumn}) => {
             task: task,
             fromColumn: column,
             fromRefreshColumn: refreshColumn 
-        },
-        collect: monitor => ({
-          isDragging: !!monitor.isDragging(),
-        }),
+        }
       });
 
     return (

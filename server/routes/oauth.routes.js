@@ -22,4 +22,6 @@ module.exports = app => {
     app.get('/auth/twitter/callback', twitterAuth, twitter);
     app.get('/auth/facebook/callback', facebookAuth, facebook);
     app.get('/auth/github/callback', githubAuth, github);
+
+    app.get('/auth/logout', (req,res) => req.session.destroy());
 }

@@ -1,15 +1,15 @@
-import React from 'react'
-import io from 'socket.io-client'
-import OAuth from '../components/OAuth'
-const socket = io("http://localhost:8000")
-const providers = ['twitter', 'google', 'facebook', 'github']
+import React from 'react';
+import io from 'socket.io-client';
+import OAuth from '../components/OAuth';
+import {useAppContext} from '../libs/contextLib';
+const socket = io("http://localhost:8000");
+const providers = ['twitter', 'google', 'facebook', 'github'];
 
 export default props => {
+    const {auth,user} = useAppContext();
     return (
-        <div className={'wrapper'}>
-            <div className={'container'}>
-                {providers.map(provider => <OAuth provider={provider} key={provider} socket={socket}/>)}
-            </div>
+        <div>
+            {auth ? <p>{user.username}</p> : providers.map(provider => <OAuth provider={provider} key={provider} socket={socket}/>)}
         </div>
     );
 }
